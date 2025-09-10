@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inconsolata } from "next/font/google"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+const inconsolata = Inconsolata({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Code Hike v1 Starter",
@@ -17,9 +17,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="dark bg-zinc-950 prose prose-invert mx-auto py-24 max-w-5xl px-4"
+      className="dark prose prose-invert mx-auto max-w-5xl bg-zinc-950 px-4 py-24"
     >
-      <body className={inter.className}>{children}</body>
+      <body className={inconsolata.className}>{children}</body>
     </html>
   )
 }
