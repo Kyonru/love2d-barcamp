@@ -1,55 +1,31 @@
-import { Block, CodeBlock, ImageBlock, parseRoot } from "codehike/blocks"
-import Content from "./content.mdx"
 import { z } from "zod"
+import { Block, parseRoot } from "codehike/blocks"
 import { Selection, SelectionProvider } from "codehike/utils/selection"
-// From token-transitions example
-import { Controls } from "../components/controls"
-import { Code } from "../components/code"
+import { Controls } from "@/components/controls"
+import { CodeWithTabs, TabsSchema } from "@/components/code-tabs"
+import { CodeEditorWindow } from "@/components/editor"
+import Content from "./content.mdx"
 
-const Schema = Block.extend({
-  steps: z.array(
-    Block.extend({ code: CodeBlock, cover: z.optional(ImageBlock) }),
-  ),
+export const Schema = Block.extend({
+  steps: z.array(TabsSchema),
 })
-
-export const CodeEditorWindow = ({
-  children,
-  title,
-}: {
-  title?: string
-  children: React.ReactNode
-}) => {
-  return (
-    <div className={"h-fit w-[40vw]"}>
-      <div className="overflow-hidden rounded-lg">
-        <div className="flex flex-row gap-3 rounded-t-lg bg-emerald-900 p-4">
-          <span className="size-4 rounded-full bg-red-400 hover:bg-red-500 active:bg-red-600" />
-          <span className="size-4 rounded-full bg-yellow-400 hover:bg-yellow-500 active:bg-yellow-600" />
-          <span className="size-4 rounded-full bg-green-400 hover:bg-green-500 active:bg-green-600" />
-          {title && (
-            <span className="size-4 rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-600">
-              {title}
-            </span>
-          )}
-        </div>
-        <div>{children}</div>
-      </div>
-    </div>
-  )
-}
 
 export default function Page() {
   const { steps } = parseRoot(Content, Schema)
+  console.log(steps)
+
   return (
     <SelectionProvider>
-      <CodeEditorWindow>
+      <CodeEditorWindow steps={steps}>
         <Selection
           from={steps.map((step) => (
-            <Code codeblock={step.code} />
+            <CodeWithTabs tabs={step.tabs} />
           ))}
         />
       </CodeEditorWindow>
-      <Controls length={steps.length} />
+      <div className="mt-4">
+        <Controls length={steps.length} />
+      </div>
       <div className="px-4">
         <Selection from={steps.map((step) => step.children)} />
       </div>
