@@ -15,20 +15,29 @@ export default function Page() {
   console.log(steps)
 
   return (
-    <SelectionProvider>
-      <CodeEditorWindow steps={steps}>
-        <Selection
-          from={steps.map((step) => (
-            <CodeWithTabs tabs={step.tabs} />
-          ))}
-        />
-      </CodeEditorWindow>
-      <div className="mt-4">
-        <Controls length={steps.length} />
-      </div>
-      <div className="px-4">
-        <Selection from={steps.map((step) => step.children)} />
-      </div>
-    </SelectionProvider>
+    <>
+      <SelectionProvider>
+        <CodeEditorWindow steps={steps}>
+          <Selection
+            from={steps.map((step) => (
+              <CodeWithTabs tabs={step.tabs} />
+            ))}
+          />
+        </CodeEditorWindow>
+        <div className="mt-4">
+          <Controls length={steps.length} />
+        </div>
+        <div className="px-4">
+          <Selection from={steps.map((step) => step.children)} />
+        </div>
+      </SelectionProvider>
+      <iframe
+        src="http://localhost:8080/?g=game.love"
+        title="Game"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </>
   )
 }
