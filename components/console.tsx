@@ -10,6 +10,7 @@ type ConsolePromptProps = {
   typeWriter?: boolean
   speed?: number
   delay?: number
+  sourceControl?: string
 }
 
 export function ConsolePrompt({
@@ -20,6 +21,7 @@ export function ConsolePrompt({
   typeWriter = true,
   speed = 40,
   delay = 0,
+  sourceControl = "git",
 }: ConsolePromptProps) {
   const animatedCommand = useTypewriter(command, speed, delay)
 
@@ -27,18 +29,18 @@ export function ConsolePrompt({
     <div className="rounded-none bg-[#0b1220] px-4 py-3 font-mono text-sm text-gray-200">
       <div className="flex items-center gap-1 whitespace-nowrap">
         {/* Arrow */}
-        <span className="font-bold text-green-400">➜</span>
+        <span className="font-bold text-yellow-400">➜</span>
 
         {/* Folder */}
         <span className="font-semibold text-blue-400">{folder}</span>
 
         {/* Git branch */}
         <span className="text-blue-700">
-          git:(<span className="font-bold text-red-400">{branch}</span>)
+          {sourceControl}:(<span className="font-bold text-red-400">{branch}</span>)
         </span>
 
         {/* Status */}
-        {status && <span className="font-bold text-yellow-500">✗</span>}
+        {status && <span className="font-bold text-green-500">✓</span>}
 
         {/* Command */}
         {command && (

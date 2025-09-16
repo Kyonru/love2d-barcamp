@@ -1,185 +1,164 @@
-## !intro Scrollycoding Example
+## !intro What is löve?
+> LÖVE is an *awesome* framework you can use to make 2D games in Lua. It's free, open-source, and works on Windows, macOS, Linux, Android and iOS. - [love2d.org](https://love2d.org/)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus elit, tincidunt consectetur auctor ac, dignissim eget dolor. Integer magna ante, dictum ut posuere sed, faucibus quis risus.
 
-Phasellus id dolor lacinia, commodo nisl non, condimentum ante. Nam diam augue, tempor quis condimentum eget, luctus vitae felis. Aenean maximus ultrices massa ac viverra. Nullam tellus enim, tincidunt ac ligula eu, placerat vulputate justo. Vivamus non dui malesuada, mattis dolor vitae, aliquam ipsum. Sed dapibus nibh nisi, sit amet consectetur sapien scelerisque at.
+## !!steps What is Lua?
 
-## !!steps A Game of Thrones
+ Lua is a powerful, efficient, lightweight, embeddable scripting language. - [lua.org](https://www.lua.org/about.html)
 
-A Game of Thrones is the first book in the A Song of Ice and Fire series by George R.R. Martin. Set in a world where seasons last for years, it introduces a complex plot and a wide cast of characters, ranging from noble families vying for the Iron Throne to the supernatural threats in the North.
+```lua ! example.lua
 
-```js ! george.js
-const houses = [
-  "Stark",
-  "Lannister",
-  "Baratheon",
-  "Targaryen",
-]
-
-const winner =
-  houses[
-    Math.floor(
-      Math.random() * houses.length,
-    )
-  ]
-
-console.log(`Iron Throne: ${winner}`)
+-- This is a simple Lua program
+print("Hello, World!")
 ```
 
-## !!steps A Clash of Kings
+## !!steps Creating a function
 
-A Clash of Kings, the second book in the series, continues the epic saga. The Seven Kingdoms are plunged into war, with kings rising and falling. Meanwhile, Daenerys Targaryen seeks to return to Westeros with her growing dragons.
+Functions are first-class citizens in Lua. They can be stored in variables, passed as arguments to other functions, and returned as values from other functions.
 
-```js ! george.js
-const houses = [
-  "Stark",
-  "Lannister",
-  "Baratheon",
-  "Targaryen",
-]
+```lua ! example.lua
 
-const clash = () => {
-  const winner =
-    houses[
-      Math.floor(
-        Math.random() * houses.length,
-      )
-    ]
-  return `${winner} wins the battle!`
-}
+print("Hello, World!")
 
-console.log(clash())
+function sum(a, b)
+  return a + b
+end
+
+local a = 3
+local b = 5
+
+print(sum(a, b)) -- Output: 8
 ```
 
-## !!steps A Storm of Swords
 
-The third book, A Storm of Swords, is known for its intense and shocking developments. Battles rage on, alliances shift, and characters face unexpected challenges and betrayals, making it one of the most thrilling books in the series.
+## !!steps Using tables
 
-```js ! george.js
-const houses = [
-  "Stark",
-  "Lannister",
-  "Baratheon",
-]
+Tables are the only data structure in Lua. They can be used as arrays, dictionaries, or even objects.
 
-const reveal = () => {
-  const traitor =
-    houses[
-      Math.floor(
-        Math.random() * houses.length,
-      )
-    ]
-  return `${traitor} betrays the alliance!`
+```lua ! example.lua
+
+function sum(a, b)
+  return a + b
+end
+
+-- Creating a table
+local calculator = {
+  version = "1.0",
+  add = sum,
 }
 
-console.log(reveal())
+print(calculator.add(10, 20)) -- Output: 30
 ```
 
-## !!steps A Feast for Crows
+## !!steps Tables are references
 
-A Feast for Crows, the fourth book, explores the aftermath of the wars, with a focus on the characters in the southern regions of Westeros. It delves into the politics and power struggles in a kingdom weary of battle.
+Tables in Lua are reference types. Don't worry about memory management.
 
-```js ! george.js
-const houses = [
-  "Martell",
-  "Lannister",
-  "Baratheon",
-  "Tyrell",
-]
+```lua ! example.lua
 
-const intrigue = () => {
-  const ally1 =
-    houses[
-      Math.floor(
-        Math.random() * houses.length,
-      )
-    ]
-  const ally2 =
-    houses[
-      Math.floor(
-        Math.random() * houses.length,
-      )
-    ]
-  return `${ally1} and ${ally2} form an alliance!`
-}
-
-console.log(intrigue())
+a = {}
+a["x"] = 10
+b = a
+-- `b' refers to the same table as `a'
+print(b["x"])  --> 10
+b["x"] = 20
+print(a["x"])  --> 20
+a = nil
+-- now only `b' still refers to the table
+b = nil
+-- now the table is free to be collected
 ```
 
-## !!steps A Dance with Dragons
 
-A Dance with Dragons, the fifth book, runs concurrently with A Feast for Crows and focuses on the characters in the North and across the Narrow Sea. The story advances with dragons, the Night’s Watch, and the lingering threat of winter.
+## !!steps Using Löve
 
-```js ! george.js
-const houses = [
-  "Stark",
-  "Lannister",
-  "Baratheon",
-  "Targaryen",
-]
+Love event cycle consists of several callback functions that you can define in your code. The most commonly used callbacks are love.load, love.update, and love.draw.
 
-const dragons = () => {
-  const dragon =
-    houses[
-      Math.floor(
-        Math.random() * houses.length,
-      )
-    ]
-  return `${dragon} has a dragon!`
-}
+```lua ! love.lua
+function love.load()
+  -- This function is called once at the beginning of the game
+end
 
-console.log(dragons())
+function love.update(dt)
+  -- This function is called every frame to update the game state
+end
+
+function love.draw()
+  -- This function is called every frame to render the game
+end
 ```
 
-## !!steps The Winds of Winter
+## !!steps Drawing text
 
-The Winds of Winter, the anticipated sixth book, is expected to continue the intricate storylines and bring new twists and turns to the world of Westeros. Fans eagerly await its release.
+You can use the love.graphics.print function to draw text on the screen.
 
-```js ! george.js
-const houses = [
-  "Stark",
-  "Lannister",
-  "Baratheon",
-  "Targaryen",
-  "Martell",
-  "Tyrell",
-  "Greyjoy",
-]
-
-const winterIsComing = () => {
-  const isComing = Math.random() > 0.99
-  if (isComing) {
-    return "Winter is coming!"
-  } else {
-    return "Winter is not coming."
-  }
-}
-
-console.log(winterIsComing())
+```lua ! love.lua
+function love.draw()
+  love.graphics.print("Hello World!", 400, 300)
+end
 ```
 
-## !!steps A Dream of Spring
+## !!steps Drawing an image
 
-A Dream of Spring is the proposed final book in the series, anticipated to conclude the epic saga. It remains one of the most awaited books in modern fantasy literature.
+You can use the love.graphics.draw function to draw images on the screen.
 
-```js ! george.js
-const houses = [
-  "Stark",
-  "Lannister",
-  "Baratheon",
-  "Targaryen",
-  "Martell",
-  "Tyrell",
-  "Greyjoy",
-]
+```lua ! love.lua
+function love.load()
+  whale = love.graphics.newImage("whale.png")
+end
 
-const keepDreaming = () => {
-  return "Not gonna happen..."
-}
+function love.draw()
+  love.graphics.draw(whale, 300, 200)
+end
+```
 
-console.log(keepDreaming())
+## !!steps Moving an object
+You can update the position of an object in the love.update function.
+
+```lua ! love.lua
+local x = 100
+local y = 100
+local speed = 200
+
+function love.update(dt)
+  if love.keyboard.isDown("right") then
+    x = x + speed * dt
+  elseif love.keyboard.isDown("left") then
+    x = x - speed * dt
+  end
+
+  if love.keyboard.isDown("down") then
+    y = y + speed * dt
+  elseif love.keyboard.isDown("up") then
+    y = y - speed * dt
+  end
+end
+
+function love.draw()
+  love.graphics.rectangle("fill", x, y, 50, 50)
+end
+```
+
+## !!steps Delta time
+Delta time (dt) is the time elapsed since the last frame. It is used to make movement frame-rate independent.
+
+```lua ! love.lua
+function love.update(dt)
+  -- Expensive computation to simulate a heavy load
+  for i = 1, 1000 do
+    for j = 1, 1000 do
+      local y = math.sqrt(i) * math.cos(i)
+    end
+  end
+
+  print(dt) -- Print delta time to the console
+end
+
+-- Frame 1: dt = 0.084927708333333
+-- Frame 2: dt = 0.0468515
+-- Frame 3: dt = 0.028987291666667
 ```
 
 ## !outro
 
-Quisque id pretium neque. Vestibulum metus orci, pretium nec varius convallis, viverra quis urna. Praesent luctus, purus nec tempus placerat, justo lorem auctor ligula, ut condimentum tellus velit ac erat. Fusce ut dictum libero. Vestibulum ipsum mauris, cursus sed tortor at, rhoncus viverra ipsum. Donec odio dolor, varius quis congue posuere, tempor et justo. Praesent at scelerisque metus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed malesuada leo vitae mauris eleifend condimentum. Proin auctor, ex ac aliquam gravida, felis felis lacinia libero, efficitur aliquet nulla neque sed elit. Vestibulum congue aliquam risus, sit amet rutrum magna euismod ac. Integer posuere neque nec ex sollicitudin rhoncus.
+That's it for this introduction to Löve and Lua! [Next up: Game & löve](/slides)

@@ -12,7 +12,7 @@ export function Code({ codeblock }: { codeblock: RawCode }) {
     <Pre
       code={highlighted}
       handlers={[callout, mark, focus, tokenTransitions]}
-      className="mt-0 min-h-[15rem] rounded-none !bg-zinc-900 p-2 pt-4"
+      className="mt-0 rounded-none !bg-zinc-900 p-2 pt-4"
     />
   )
 }

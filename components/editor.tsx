@@ -42,8 +42,9 @@ export const CodeEditorWindow = ({
         <div>
           <Suspense>{children}</Suspense>
           <ConsolePrompt
-            folder="codehike"
-            branch="main"
+            sourceControl='Philly'
+            folder="BARCAMP"
+            branch="2025"
             status={true}
             command={command}
             typeWriter={true}
