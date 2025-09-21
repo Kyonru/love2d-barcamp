@@ -35,7 +35,7 @@ export default function Page() {
           </div>
         </div>
       </SelectionProvider>
-      <Link href="/">Home</Link>
+      <Link href="/">{"<"}</Link>
     </>
   )
 }
