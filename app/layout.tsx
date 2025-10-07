@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="dark prose prose-invert mx-auto max-w-5xl bg-zinc-950 px-4 py-24"
+      className="no-scrollbar dark prose prose-invert mx-auto max-w-5xl bg-zinc-950 px-4 py-4"
     >
       <body className={inconsolata.className}>{children}</body>
     </html>

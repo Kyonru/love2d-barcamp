@@ -2,6 +2,7 @@
 import { useSelectedIndex } from "codehike/utils/selection"
 import { useCallback } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
+import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react"
 
 export function Controls({ length }: { length: number }) {
   const [selectedIndex, setSelectedIndex] = useSelectedIndex()
@@ -22,19 +23,19 @@ export function Controls({ length }: { length: number }) {
   return (
     <div className="flex items-center justify-center">
       <button className="mr-4" onClick={onBack}>
-        Prev
+        <ChevronLeftIcon className="size-10 active:animate-ping" />
       </button>
       {[...Array(length)].map((_, i) => (
         <button
           key={i}
-          className={`w-2 h-2 rounded-full mx-1 cursor-pointer ${
-            selectedIndex === i ? "bg-white" : "bg-gray-600"
-          }`}
+          className={`rounded-full mx-1 cursor-pointer ${
+            selectedIndex === i ? "bg-white size-3" : "bg-gray-600 size-2"
+          } transition duration-500`}
           onClick={() => onSelect(i)}
         />
       ))}
       <button className="ml-4" onClick={onNext}>
-        Next
+        <ChevronRightIcon className="size-10 active:animate-ping" />
       </button>
     </div>
   )

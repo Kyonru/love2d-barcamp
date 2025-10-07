@@ -42,13 +42,13 @@ export const CodeEditorWindow = ({
         <div>
           <Suspense>{children}</Suspense>
           <ConsolePrompt
-            sourceControl='Philly'
+            sourceControl="Philly"
             folder="BARCAMP"
             branch="2025"
             status={true}
             command={command}
             typeWriter={true}
-            speed={40}
+            speed={15}
             delay={1000}
           />
         </div>
