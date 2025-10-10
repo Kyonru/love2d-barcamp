@@ -1,11 +1,51 @@
 "use client"
 import { useSelectedIndex } from "codehike/utils/selection"
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react"
+import { CodeWithTabs, TabsSchema } from "@/components/code-tabs"
+import { z } from "zod"
 
-export function Controls({ length }: { length: number }) {
+interface Props {
+  steps: z.infer<typeof TabsSchema>[]
+}
+
+const Dot = ({
+  onClick,
+  selected,
+  title,
+}: {
+  onClick: () => void
+  selected: boolean
+  title?: string
+}) => {
+  const [showTooltip, setShowTooltip] = useState(false)
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
+    >
+      <button
+        title={title}
+        className={`rounded-full mx-1 cursor-pointer ${
+          selected ? "bg-white size-3" : "bg-gray-600 size-2"
+        } transition duration-500`}
+        onClick={onClick}
+      />
+      {showTooltip && (
+        <p className="absolute left-9 top-0 whitespace-nowrap rounded-lg bg-secondary p-1 text-sm text-white">
+          {title}
+        </p>
+      )}
+    </div>
+  )
+}
+
+export function Controls({ steps }: Props) {
   const [selectedIndex, setSelectedIndex] = useSelectedIndex()
+  const length = steps.length
 
   const onBack = useCallback(
     () => setSelectedIndex(Math.max(0, selectedIndex - 1)),
@@ -25,13 +65,12 @@ export function Controls({ length }: { length: number }) {
       <button className="mr-4" onClick={onBack}>
         <ChevronLeftIcon className="size-10 active:animate-ping" />
       </button>
-      {[...Array(length)].map((_, i) => (
-        <button
+      {steps.map((step, i) => (
+        <Dot
           key={i}
-          className={`rounded-full mx-1 cursor-pointer ${
-            selectedIndex === i ? "bg-white size-3" : "bg-gray-600 size-2"
-          } transition duration-500`}
+          title={step.title}
           onClick={() => onSelect(i)}
+          selected={selectedIndex === i}
         />
       ))}
       <button className="ml-4" onClick={onNext}>

@@ -99,6 +99,7 @@ return player
 Add properties to define the player position and size.
 
 ![!!images player](/assets/idle.png)
+![!!assets player](/assets/idle.png)
 
 ### !!tabs player.lua
 
@@ -375,6 +376,7 @@ _WIDTH = love.graphics.getWidth()
 Let's add a background to our game.
 
 ![!!images background](/assets/background.png)
+![!!assets background](/assets/background.png)
 
 ### !!tabs main.lua
 
@@ -514,6 +516,7 @@ end
 Let's add some obstacles to avoid.
 
 ![!!images block](/assets/block.png)
+![!!assets block](/assets/block.png)
 
 ### !!tabs main.lua
 
@@ -546,7 +549,9 @@ end
 ### !!tabs obstacles.lua
 
 ```lua !
+-- !diff(1:13) +
 local obstacles = {}
+local block = love.graphics.newImage('assets/block.png')
 
 function obstacles.load()
 end
@@ -677,6 +682,7 @@ end
 Before we can handle collisions, let's add a health system to the player.
 
 ![!!images live](/assets/live.png)
+![!!assets live](/assets/live.png)
 
 ### !!tabs player.lua
 
@@ -831,7 +837,7 @@ end
 return utils
 ```
 
-## !!steps Polishing 1/4
+## !!steps Polishing 1/9
 
 The player can move infinitely after the user stops pressing a key. Let's decrease the velocity over time to simulate friction.
 
@@ -854,7 +860,7 @@ function player.update(dt)
 end
 ```
 
-## !!steps Polishing 2/4
+## !!steps Polishing 2/9
 
 The player can move infinitely after the user stops pressing a key. Let's decrease the velocity over time to simulate friction.
 
@@ -907,7 +913,7 @@ function utils.easeOutCirc(value, factor)
 end
 ```
 
-## !!steps Polishing 3/4
+## !!steps Polishing 3/9
 
 Let's add a wind force to the player when no input is detected.
 
@@ -936,7 +942,7 @@ function player.update(dt)
 end
 ```
 
-## !!steps Polishing 4/4
+## !!steps Polishing 4/9
 
 Let's change the player's sprite to the direction it's moving.
 
@@ -948,6 +954,11 @@ git checkout fa53b4baae6e6419086b07d16727c84fe2b4f16e
 ![!!images up](/assets/up.png)
 ![!!images move](/assets/move.png)
 ![!!images back](/assets/hit.png)
+
+![!!assets down](/assets/down.png)
+![!!assets up](/assets/up.png)
+![!!assets move](/assets/move.png)
+![!!assets back](/assets/hit.png)
 
 ### !!tabs player.lua
 
@@ -984,7 +995,7 @@ function player.update(dt)
 end
 ```
 
-## !!steps Polishing 5/4
+## !!steps Polishing 5/9
 
 When the player hits the screen bounds, we want it to bounce back.
 
@@ -1027,7 +1038,7 @@ function player.update(dt)
 end
 ```
 
-## !!steps Polishing 6/4
+## !!steps Polishing 6/9
 
 Let's improve the background by adding a parallax effect. Start by moving the code to a new file.
 
@@ -1039,7 +1050,6 @@ local background = {}
 
 function background.load(r, g, b, a)
   background.list = {}
-  love.graphics.setBackgroundColor(r, g, b, a)
 end
 
 function background.update(dt)
@@ -1090,13 +1100,95 @@ local function draw_background(parallax)
 end
 ```
 
-## !!steps Polishing 6/4
+## !!steps Polishing 7/9
 
-Let's add particles to the background.
+Now let's create multiple layers from our initial the background. And reuse our scrolling pattern to make infinite backgrounds.
 
 ```bash !console
 git checkout d8473233c71229347eb0a137bdbbb445d177a125
 ```
+
+![!!images clouds_front](/assets/clouds_front.png)
+![!!images clouds_back](/assets/clouds_back.png)
+
+![!!assets clouds_front](/assets/clouds_front.png)
+![!!assets clouds_back](/assets/clouds_back.png)
+
+### !!tabs background.lua
+
+```lua !
+function background.load(r, g, b, a)
+  -- !diff(1:1) +
+  love.graphics.setBackgroundColor(r, g, b, a)
+end
+
+-- !diff(1:27) +
+function background.create_infinite_parallax(sprite, background_height, speed)
+  local parallax_1 = {
+    sprite = sprite,
+    width = sprite:getWidth(),
+    height = sprite:getHeight(),
+    background_height = background_height,
+    x = 0,
+    y = _HEIGHT - background_height,
+    inspectingColor = { 1, 0, 0, 0.5 },
+    speed = speed,
+  }
+  local parallax_2 = {
+    sprite = sprite,
+    width = sprite:getWidth(),
+    height = sprite:getHeight(),
+    background_height = background_height,
+    x = _WIDTH,
+    y = _HEIGHT - background_height,
+    inspectingColor = { 0, 1, 0, 0.5 },
+    speed = speed,
+  }
+
+  background.list[#background.list + 1] = parallax_1
+  background.list[#background.list + 1] = parallax_2
+
+  return parallax_1, parallax_2
+end
+```
+
+### !!tabs main.lua
+
+```lua !
+-- !diff(1:1) +
+local background = require("background")
+
+-- !diff(1:4) +
+local clouds_front = love.graphics.newImage("assets/clouds/clouds_front.png")
+clouds_front:setFilter("linear", "nearest")
+local clouds_back = love.graphics.newImage("assets/clouds/clouds_back.png")
+clouds_front:setFilter("linear", "nearest")
+
+function love.load()
+-- !diff(1:3) +
+  background.load(2 / 255, 29 / 255, 53 / 255, 1)
+  background.create_infinite_parallax(clouds_back, _HEIGHT / 1.75, 0.5)
+  background.create_infinite_parallax(clouds_front, _HEIGHT / 2.4, 1)
+end
+
+function love.update(dt)
+-- !diff(1:1) +
+  background.update(dt)
+end
+
+function love.draw()
+-- !diff(1:2) -
+  draw_background(parallax_a)
+  draw_background(parallax_b)
+-- !diff(1:1) +
+  background.draw()
+end
+
+```
+
+## !!steps Polishing 8/9
+
+Let's add particles to the background.
 
 ### !!tabs main.lua
 
@@ -1150,13 +1242,16 @@ end
 return particles
 ```
 
-## !!steps Polishing 6/4
+## !!steps Polishing 9/9
 
 Pro tip: You can use [Hot Particles](https://github.com/ReFreezed/HotParticles/releases/tag/1.9.0) to visualize and create particles for love2d.
 
 ```bash !console
-git checkout d8473233c71229347eb0a137bdbbb445d177a125
+git checkout 11749fa9e58fabfd5dc3c6f19bd0be99786f010b
 ```
+
+![!!images star](/assets/star.png)
+![!!assets star](/assets/star.png)
 
 ### !!tabs particles.lua
 
@@ -1207,11 +1302,9 @@ end
 
 ## !!steps Displaying UI: Score 1/2
 
-Pro tip: You can use [Hot Particles](https://github.com/ReFreezed/HotParticles/releases/tag/1.9.0) to visualize and create particles for love2d.
+Let's count the amount of time the player has been alive. We'll use a font to display the score.
 
-```bash !console
-git checkout d8473233c71229347eb0a137bdbbb445d177a125
-```
+![!!assets sniglet](/assets/sniglet.otf)
 
 ### !!tabs score.lua
 
@@ -1301,10 +1394,10 @@ end
 
 ## !!steps Displaying UI: Action 2/2
 
-Pro tip: You can use [Hot Particles](https://github.com/ReFreezed/HotParticles/releases/tag/1.9.0) to visualize and create particles for love2d.
+Let's add a font to display the score.
 
 ```bash !console
-git checkout d8473233c71229347eb0a137bdbbb445d177a125
+git checkout 549676509a9759104a56642b3dfe83ca7181b311
 ```
 
 ### !!tabs player.lua
@@ -1367,8 +1460,15 @@ end
 Let's add a sound effect to the player's death.
 
 ```bash !console
-git checkout 42ce6b6720ff640f3ff59f6e6ba8d7699bdc9109
+git checkout 8d4345bdb664409bd5ce83394cb9f0f5834482e1
 ```
+
+![!!audios adventures_in_adventureland](/assets/adventures_in_adventureland.mp3)
+![!!audios sfx_bump](/assets/sfx_bump.ogg)
+![!!audios sfx_hit](/assets/sfx_hit.wav)
+![!!audios sfx_disappear](/assets/sfx_disappear.ogg)
+![!!audios sfx_move](/assets/sfx_move.wav)
+![!!audios sfx_stop](/assets/sfx_stop.ogg)
 
 ### !!tabs sound.lua
 
@@ -1504,11 +1604,11 @@ end
 Careful with adding new things without a defined plan, you can end up coding a bunch of stuff and never finishing it. Just like this talk.
 
 ```bash !console
-git checkout 42ce6b6720ff640f3ff59f6e6ba8d7699bdc9109
+git checkout a7946c77a4cd5b94472df419691862ba5061003e
 ```
 
 ### !!tabs scope_creep.lua
 
 ```lua !
-print("Help me!")
+print("Please help me!")
 ```

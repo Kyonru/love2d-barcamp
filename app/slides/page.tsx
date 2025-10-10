@@ -18,14 +18,13 @@ export const Schema = Block.extend({
 
 export default function Page() {
   const { steps } = parseRoot(Content, Schema)
-  console.log(steps)
 
   return (
     <>
       <SelectionProvider>
         <div className="mb-8 flex flex-1 flex-col justify-between">
           <div className="mb-2">
-            <Controls length={steps.length} />
+            <Controls steps={steps} />
           </div>
           <CodeEditorWindow steps={steps}>
             <Selection
@@ -41,6 +40,7 @@ export default function Page() {
           <SlideContent
             images={steps.map((step) => step.images || [])}
             audios={steps.map((step) => step.audios || [])}
+            assets={steps.map((step) => step.assets || [])}
           />
         </div>
       </SelectionProvider>
