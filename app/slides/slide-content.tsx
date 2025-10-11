@@ -8,7 +8,7 @@ type SlideContentProps = {
 }
 
 export const SlideContent = (props: SlideContentProps) => {
-  const [selectedIndex, setSelectedIndex] = useSelectedIndex()
+  const [selectedIndex] = useSelectedIndex()
 
   const images = props.images[selectedIndex]
   const audios = props.audios[selectedIndex]

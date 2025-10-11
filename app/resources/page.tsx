@@ -9,6 +9,7 @@ import Content from "./content.mdx"
 // From token-transitions example
 import { Code } from "@/components/code"
 import Link from "next/link"
+import { ResourcesTab, ResourceTabDetails } from "./tab"
 
 const Schema = Block.extend({
   steps: z.array(
@@ -32,21 +33,14 @@ export default function Page() {
   const { steps } = parseRoot(Content, Schema)
   return (
     <>
-      <SelectionProvider className="flex">
-        <div className="prose prose-invert ml-2 mt-4 flex-1 prose-h2:mt-4">
+      <SelectionProvider className="flex flex-col md:flex-row">
+        <div className="prose prose-invert sticky top-4 z-50 flex flex-1 flex-row gap-2 prose-h2:mt-4 md:ml-2 md:mt-4 md:flex-col md:gap-0">
           {steps.map((step, i) => (
-            <Selectable
-              key={i}
-              index={i}
-              selectOn={["click"]}
-              className="mb-4 cursor-pointer rounded border border-zinc-700 bg-zinc-900 px-5 py-2 transition-colors duration-200 ease-in-out hover:bg-zinc-800 data-[selected=true]:border-blue-400"
-            >
-              <h2 className="text-xl">{step.title}</h2>
-              <div>{step.children}</div>
-            </Selectable>
+            <ResourcesTab key={i} i={i} step={step} />
           ))}
         </div>
-        <div className="w-[40vw] max-w-xl">
+        <ResourceTabDetails steps={steps} />
+        <div className="max-w-xl md:w-[40vw]">
           <div className="sticky top-16 h-full overflow-auto p-4">
             <Selection
               from={steps.map((step, i) => (

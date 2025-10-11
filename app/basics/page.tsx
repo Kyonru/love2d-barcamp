@@ -21,15 +21,15 @@ export default function Page() {
     <main>
       <h1 className="mt-8">{intro.title}</h1>
       {intro.children}
-      <SelectionProvider className="flex gap-4">
-        <div className="prose prose-invert mb-[90vh] ml-2 flex-1">
+      <SelectionProvider className="flex flex-col-reverse gap-4 md:flex-row">
+        <div className="prose prose-invert ml-2 flex-1 md:mb-[90vh]">
           {steps.map((step, i) => (
-            <div className="h-[100vh]" key={i}>
+            <div className="mb-8 md:h-[50vh]" key={i}>
               <Selectable
                 key={i}
                 index={i}
                 selectOn={["click", "scroll"]}
-                className="mb-24 rounded border-l-4 border-zinc-700 bg-zinc-900 px-5 py-2 data-[selected=true]:border-blue-400"
+                className="rounded border-l-4 border-zinc-700 bg-zinc-900 px-5 py-2 data-[selected=true]:border-blue-400 md:mt-24"
               >
                 <h2 className="mt-4 text-xl">{step.title}</h2>
                 <div>{step.children}</div>
@@ -37,8 +37,8 @@ export default function Page() {
             </div>
           ))}
         </div>
-        <div className="w-[40vw] max-w-xl bg-zinc-900">
-          <div className="sticky top-4 overflow-auto">
+        <div className="no-scrollbar sticky top-0 max-h-60 max-w-xl overflow-auto bg-zinc-900 md:max-h-max md:w-[40vw]">
+          <div className="sticky top-0 overflow-auto md:top-4">
             <Selection
               from={steps.map((step) => (
                 <Code codeblock={step.code} />
@@ -48,7 +48,7 @@ export default function Page() {
         </div>
       </SelectionProvider>
 
-      <div className="mb-4 mt-4 flex flex-row justify-between">
+      <div className="flex flex-row justify-between md:my-4">
         <Link href="/">{"< Home"}</Link>
         <Link href="/slides">{"Slides >"}</Link>
       </div>
@@ -62,7 +62,7 @@ async function Code({ codeblock }: { codeblock: RawCode }) {
     <Pre
       code={highlighted}
       handlers={[tokenTransitions]}
-      className="min-h-[40rem] bg-transparent"
+      className="mt-2 bg-transparent pt-0 md:mt-4 md:min-h-[40rem]"
     />
   )
 }

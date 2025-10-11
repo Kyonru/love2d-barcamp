@@ -31,7 +31,7 @@ export function CodeTabs({
       defaultValue={tabs[0]?.title}
       className="dark bg-muted"
     >
-      <TabsList className="rounded-none">
+      <TabsList className="flex flex-1 justify-start overflow-x-auto rounded-none">
         {tabs.map((tab) => (
           <TabsTrigger key={tab.title} value={tab.title || ""}>
             {tab.title}

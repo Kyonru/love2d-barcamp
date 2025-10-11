@@ -3,8 +3,9 @@ import { useSelectedIndex } from "codehike/utils/selection"
 import { useCallback, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react"
-import { CodeWithTabs, TabsSchema } from "@/components/code-tabs"
+import { TabsSchema } from "@/components/code-tabs"
 import { z } from "zod"
+import { useIsMobile } from "@/hooks/useIsMobile"
 
 interface Props {
   steps: z.infer<typeof TabsSchema>[]
@@ -60,19 +61,29 @@ export function Controls({ steps }: Props) {
   useHotkeys("arrowleft", onBack, [onBack])
   useHotkeys("arrowright", onNext, [onNext])
 
+  const isMobile = useIsMobile()
+
   return (
     <div className="flex items-center justify-center">
       <button className="mr-4" onClick={onBack}>
         <ChevronLeftIcon className="size-10 active:animate-ping" />
       </button>
-      {steps.map((step, i) => (
-        <Dot
-          key={i}
-          title={step.title}
-          onClick={() => onSelect(i)}
-          selected={selectedIndex === i}
-        />
-      ))}
+      {isMobile ? (
+        <div className="text-sm text-white">
+          {selectedIndex + 1} / {length}
+        </div>
+      ) : (
+        <div className="flex items-center">
+          {steps.map((step, i) => (
+            <Dot
+              key={i}
+              title={step.title}
+              onClick={() => onSelect(i)}
+              selected={selectedIndex === i}
+            />
+          ))}
+        </div>
+      )}
       <button className="ml-4" onClick={onNext}>
         <ChevronRightIcon className="size-10 active:animate-ping" />
       </button>

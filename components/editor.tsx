@@ -27,15 +27,13 @@ export const CodeEditorWindow = ({
   return (
     <div className={"h-fit"}>
       <div className="overflow-hidden rounded-lg">
-        <div className="flex flex-row gap-3 rounded-t-lg bg-emerald-900 p-4">
+        <div className="flex flex-row items-center gap-3 rounded-t-lg bg-emerald-900 p-4">
           <span className="size-4 rounded-full bg-red-400 hover:bg-red-500 active:bg-red-600" />
           <span className="size-4 rounded-full bg-yellow-400 hover:bg-yellow-500 active:bg-yellow-600" />
           <span className="size-4 rounded-full bg-green-400 hover:bg-green-500 active:bg-green-600" />
-          <div className="flex flex-1 flex-col items-center">
+          <div className="flex flex-1 flex-row items-center">
             {title && (
-              <p className="text-md m-0 -mt-1 h-0 self-center justify-self-center p-0 pr-20 align-middle">
-                {animatedTitle}
-              </p>
+              <p className="text-md m-0 -mt-1 h-5 p-0">{animatedTitle}</p>
             )}
           </div>
         </div>
