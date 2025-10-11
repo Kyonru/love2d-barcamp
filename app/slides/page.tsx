@@ -46,7 +46,7 @@ export default function Page() {
       </SelectionProvider>
       <div className="flex flex-row justify-between">
         <Link href="/basics">{"< Basics"}</Link>
-        <Link href="/credits">{"Credits >"}</Link>
+        <Link href="/resources">{"Resources >"}</Link>
       </div>
     </>
   )

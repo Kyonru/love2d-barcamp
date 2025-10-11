@@ -20,6 +20,14 @@ export default function RootLayout({
       lang="en"
       className="no-scrollbar dark prose prose-invert mx-auto max-w-5xl bg-zinc-950 px-4 py-4"
     >
+      <head>
+        <link
+          rel="icon"
+          href="/icon.png?<generated>"
+          type="image/<generated>"
+          sizes="<generated>"
+        />
+      </head>
       <body className={inconsolata.className}>{children}</body>
     </html>
   )

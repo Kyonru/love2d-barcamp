@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { CurrentUrl } from "@/components/current-url"
 
 # Creating 2D games with Löve
 
@@ -14,23 +15,27 @@ I'm Robert (@kyonru)
 
 ```lua
 function love.draw()
-  love.graphics.print("Hello BARCAMP Philly 2025", 400, 300)
+  love.graphics.print("Hello BARCAMP Philly 2025", 10, 19)
 end
 ```
 
-- Install [Lua](https://love2d.org/wiki/Download)
+Pre requisites:
+
+- Install [Lua](https://www.lua.org/download.html)
 - Install [Löve2D](https://love2d.org/)
 
 Table of contents:
 
-- [Basics](/basics)
-- [Game & löve](/slides)
-- [Resources & Community](/resources)
-- [Credits](/credits)
+1. [Basics](/basics)
+2. [Game & löve](/slides)
+3. [Resources & Community](/resources)
+4. [Credits](/credits)
 
 <Image
-  src="/assets/linkedin.png"
+  src="/assets/qr.png"
   alt="Presentation QR Code"
   width={200}
   height={200}
 />
+
+<CurrentUrl />
