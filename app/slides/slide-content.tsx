@@ -16,7 +16,7 @@ export const SlideContent = (props: SlideContentProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="mb-8 grid flex-1 grid-cols-2 flex-col justify-between gap-4">
+      <div className="mb-8 grid flex-1 grid-cols-1 flex-col justify-between gap-4 md:grid-cols-2">
         {images.map((image, index) => (
           <img
             key={image.url + index}
@@ -26,7 +26,7 @@ export const SlideContent = (props: SlideContentProps) => {
           />
         ))}
       </div>
-      <div className="mb-8 grid flex-1 grid-cols-2 flex-col justify-between gap-4">
+      <div className="mb-8 grid flex-1 grid-cols-1 flex-col justify-between gap-4 md:grid-cols-2">
         {audios.map((audio, index) => (
           <audio
             controls
@@ -41,7 +41,7 @@ export const SlideContent = (props: SlideContentProps) => {
           </audio>
         ))}
       </div>
-      <div className="mb-8 grid flex-1 grid-cols-2 flex-col justify-between gap-4">
+      <div className="mb-8 grid flex-1 grid-cols-1 flex-col justify-between gap-4 md:grid-cols-2">
         {assets.map((asset, index) => (
           <button
             key={asset.url + index}

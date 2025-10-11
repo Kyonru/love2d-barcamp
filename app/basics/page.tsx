@@ -37,8 +37,8 @@ export default function Page() {
             </div>
           ))}
         </div>
-        <div className="no-scrollbar sticky top-0 max-h-60 max-w-xl overflow-auto bg-zinc-900 md:max-h-max md:w-[40vw]">
-          <div className="sticky top-0 overflow-auto md:top-4">
+        <div className="sticky top-0 z-50 max-h-60 max-w-xl overflow-auto bg-zinc-900 md:max-h-max md:w-[40vw]">
+          <div className="overflow-auto md:top-4">
             <Selection
               from={steps.map((step) => (
                 <Code codeblock={step.code} />
