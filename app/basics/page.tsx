@@ -13,11 +13,10 @@ import { tokenTransitions } from "@/components/annotations/token-transitions"
 const Schema = Block.extend({
   intro: Block,
   steps: z.array(Block.extend({ code: CodeBlock })),
-  outro: Block,
 })
 
 export default function Page() {
-  const { intro, steps, outro } = parseRoot(Content, Schema)
+  const { intro, steps } = parseRoot(Content, Schema)
   return (
     <main>
       <h1 className="mt-8">{intro.title}</h1>
@@ -25,21 +24,17 @@ export default function Page() {
       <SelectionProvider className="flex gap-4">
         <div className="prose prose-invert mb-[90vh] ml-2 flex-1">
           {steps.map((step, i) => (
-            <div
-              className="h-[100vh]"
-              key={i}>
-
+            <div className="h-[100vh]" key={i}>
               <Selectable
                 key={i}
-              index={i}
-              selectOn={["click", "scroll"]}
-              className="mb-24 rounded border-l-4 border-zinc-700 bg-zinc-900 px-5 py-2 data-[selected=true]:border-blue-400"
+                index={i}
+                selectOn={["click", "scroll"]}
+                className="mb-24 rounded border-l-4 border-zinc-700 bg-zinc-900 px-5 py-2 data-[selected=true]:border-blue-400"
               >
-              <h2 className="mt-4 text-xl">{step.title}</h2>
-              <div>{step.children}</div>
-            </Selectable>
+                <h2 className="mt-4 text-xl">{step.title}</h2>
+                <div>{step.children}</div>
+              </Selectable>
             </div>
-
           ))}
         </div>
         <div className="w-[40vw] max-w-xl bg-zinc-900">
@@ -52,8 +47,11 @@ export default function Page() {
           </div>
         </div>
       </SelectionProvider>
-      <h2>{outro.title}</h2>
-      {outro.children}
+
+      <div className="mb-4 mt-4 flex flex-row justify-between">
+        <Link href="/">{"< Home"}</Link>
+        <Link href="/slides">{"Slides >"}</Link>
+      </div>
     </main>
   )
 }

@@ -1,10 +1,10 @@
 ## !intro What is löve?
-> LÖVE is an *awesome* framework you can use to make 2D games in Lua. It's free, open-source, and works on Windows, macOS, Linux, Android and iOS. - [love2d.org](https://love2d.org/)
 
+> LÖVE is an _awesome_ framework you can use to make 2D games in Lua. It's free, open-source, and works on Windows, macOS, Linux, Android and iOS. - [love2d.org](https://love2d.org/)
 
 ## !!steps What is Lua?
 
- Lua is a powerful, efficient, lightweight, embeddable scripting language. - [lua.org](https://www.lua.org/about.html)
+Lua is a powerful, efficient, lightweight, embeddable scripting language. - [lua.org](https://www.lua.org/about.html)
 
 ```lua ! example.lua
 
@@ -29,7 +29,6 @@ local b = 5
 
 print(sum(a, b)) -- Output: 8
 ```
-
 
 ## !!steps Using tables
 
@@ -68,7 +67,6 @@ a = nil
 b = nil
 -- now the table is free to be collected
 ```
-
 
 ## !!steps Using Löve
 
@@ -113,6 +111,7 @@ end
 ```
 
 ## !!steps Moving an object
+
 You can update the position of an object in the love.update function.
 
 ```lua ! love.lua
@@ -140,6 +139,7 @@ end
 ```
 
 ## !!steps Delta time
+
 Delta time (dt) is the time elapsed since the last frame. It is used to make movement frame-rate independent.
 
 ```lua ! love.lua
@@ -158,7 +158,3 @@ end
 -- Frame 2: dt = 0.0468515
 -- Frame 3: dt = 0.028987291666667
 ```
-
-## !outro
-
-That's it for this introduction to Löve and Lua! [Next up: Game & löve](/slides)

@@ -12,7 +12,7 @@ import Content from "./content.mdx"
 import Link from "next/link"
 import { SlideContent } from "./slide-content"
 
-export const Schema = Block.extend({
+const Schema = Block.extend({
   steps: z.array(TabsSchema),
 })
 
@@ -44,7 +44,10 @@ export default function Page() {
           />
         </div>
       </SelectionProvider>
-      <Link href="/">{"<"}</Link>
+      <div className="flex flex-row justify-between">
+        <Link href="/basics">{"< Basics"}</Link>
+        <Link href="/credits">{"Credits >"}</Link>
+      </div>
     </>
   )
 }
