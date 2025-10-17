@@ -19,6 +19,8 @@
     "clsx": "^2.1.1",
     "codehike": "^1.0.4",
     "lucide-react": "^0.543.0",
+    "mdx-mermaid": "^2.0.3",
+    "mermaid": "^11.12.0",
     "next": "^15.5.2",
     "react": "19.0.0",
     "react-dom": "19.0.0",

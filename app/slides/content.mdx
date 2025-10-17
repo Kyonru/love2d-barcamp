@@ -15,10 +15,60 @@ git clone https://github.com/Kyonru/creating-games-with-love-demo.git
 
 ## !!steps Let's start!
 
-The <span className="underline">love.load</span> function is invoked once at the beginning of the game, then <span className="underline">love.update </span> and <span className="underline">love.draw</span> are invoked every frame in that order.
+<span>
+  <u>love.conf</u> and <u>love.load</u>{" "}
+  are invoked at the start of every game,
+  exactly once per game. This is the
+  perfect place to setup and load game
+  components.
+
+The functions inside the <u>Game Loop</u> are invoked every frame in that order. The <u>Event Handler Callbacks</u> are processed before the update function, but their execution order depends on when each event is triggered.
+
+</span>
 
 ```bash !console
 git checkout f324ecefdb6737aeb2415d63b3b3e10b97d12a0b
+```
+
+```mermaid !!charts main2.lua
+stateDiagram-v2
+    [*] --> Game
+
+    state Game {
+        A: love.conf
+        B: love.load
+        C: love.update
+        D: love.draw
+        E: love.mousepressed
+        F: love.keypressed
+        H: love.quit
+        I: ...
+
+        [*] --> A
+        A --> B
+        B --> GameLoop
+
+        GameLoop: Game Loop
+        state GameLoop {
+            [*] --> events
+
+            events: Event Handler Callbacks
+            state events {
+                [*] --> F
+                [*] --> E
+                [*] --> H
+                [*] --> I
+                F --> [*]
+                E --> [*]
+                H --> [*]
+                I --> [*]
+            }
+
+            events --> C
+            C --> D
+            D --> [*]
+        }
+    }
 ```
 
 ### !!tabs main.lua
@@ -96,7 +146,7 @@ return player
 
 ## !!steps Draw something! 2/3
 
-Add properties to define the player position and size.
+Initialize the player's basic attributes like its position, size, and sprite. So it can be drawn on the screen.
 
 ![!!images player](/assets/idle.png)
 ![!!assets player](/assets/idle.png)
@@ -123,7 +173,7 @@ end
 
 ## !!steps Draw something! 3/3
 
-Let's draw a sprite to represent our player and a rectangle to represent its hitbox.
+Now we'll render our player on the screen by drawing its sprite and visualizing its hitbox with a rectangle.
 
 ```bash !console
 git checkout 7a15081291986d44c75de25f431379a5c15677a3
@@ -150,7 +200,7 @@ end
 
 ## !!steps Moving the player 1/5
 
-Let's read keyboard input to move the player around. This sets the position of the player directly, which can feel a bit janky.
+Let's read keyboard input to move the player around. This method directly updates the player's position, which works but can feel a bit abrupt or “janky” without smoothing.
 
 ```bash !console
 git checkout b3b5f29a6af5e8675a3743b115ff91981061ee3f
@@ -190,7 +240,7 @@ end
 
 ## !!steps Moving the player 2/5
 
-Instead, we want our player (who is an astronaut) to move freely in the space.
+We want our player — an astronaut — to move freely through space, rather than just snapping to arrow key inputs.
 
 ### !!tabs player.lua
 
@@ -206,7 +256,7 @@ end
 
 ## !!steps Moving the player 3/5
 
-So let's define a velocity and speed.
+To achieve smooth movement, we'll define a speed and a velocity for the player. This lets us control movement continuously and handle directions more naturally.
 
 ### !!tabs player.lua
 
@@ -228,7 +278,7 @@ end
 
 ## !!steps Moving the player 4/5
 
-Instead of changing the position directly, we change the velocity based on input.
+Instead of updating the player's position directly, we'll now update the player's velocity based on input.
 
 ### !!tabs player.lua
 
@@ -263,7 +313,9 @@ end
 
 ## !!steps Moving the player 5/5
 
-And apply that velocity to the position every frame.
+Finally, we apply the player's velocity to their position every frame. This allows the astronaut to move smoothly in response to input rather than jumping abruptly.
+
+💡 Note: Multiplying player.speed by dt ensures frame-rate independent movement, and scaling y differently (2x) can simulate faster vertical motion if desired.
 
 ```bash !console
 git checkout 29187cd98a8f65264e9f2b441f839591ea4c4e6c
@@ -314,7 +366,7 @@ end
 
 ## !!steps Basic collisions 1/2
 
-There are a couple of issues with this approach: The user can keep moving forever even past the screen bounds.
+With the current setup, there's a problem: the player can move beyond the edges of the screen. We need to add basic collision checks to prevent the astronaut from leaving the visible area.
 
 ### !!tabs player.lua
 
@@ -329,7 +381,7 @@ end
 
 ## !!steps Basic collisions 2/2
 
-Let's fix that by clamping the position to the screen size.
+To prevent the player from moving off-screen, we **clamp the position** to the bounds of the window. If the player reaches the edge, we also reset the velocity in that direction to stop further movement.
 
 ```bash !console
 git checkout 6d9bbe9b4ed07dbebd157e2b97790a0960ca67b9
@@ -373,7 +425,7 @@ _WIDTH = love.graphics.getWidth()
 
 ## !!steps Game background 1/4
 
-Let's add a background to our game.
+Next, let's give our game some atmosphere by adding a background. This will make the scene feel less empty and give context for our astronaut.
 
 ![!!images background](/assets/background.png)
 ![!!assets background](/assets/background.png)
@@ -391,6 +443,11 @@ end
 ```
 
 ## !!steps Game background 2/4
+
+Now we'll load and draw the background image behind the player. We also set up a simple parallax object, which will allow us to manipulate the background later (for scrolling or parallax effects).
+
+**<u>love.graphics.newImage</u>** loads the image file into memory so it
+can be drawn on the screen. This is what we could call an expensive operation, so avoid doing this on every frame.
 
 ```bash !console
 git checkout f0bb1421d596edc121733c18184a60e423cf59ae
@@ -428,7 +485,7 @@ end
 
 ## !!steps Game background 3/4
 
-Let's move the background to give a scrolling effect.
+Now we'll make the background scroll horizontally to create a simple movement effect. This gives the impression that the player is moving through space.
 
 ```bash !console
 git checkout eedb2b87eb8d4db62a954179ffccf3898691df36
@@ -457,7 +514,7 @@ end
 
 ## !!steps Game background 4/4
 
-Let's make it infinite by drawing two backgrounds that loop.
+To create a seamlessly infinite scrolling background, we draw two copies of the background side by side. As one moves off-screen, the other continues, making the scrolling appear endless.
 
 ```bash !console
 git checkout d6b0bd21723ef99c20e0fd0ba53c3d2d2ea2210f
@@ -513,7 +570,7 @@ end
 
 ## !!steps Obstacles 1/6
 
-Let's add some obstacles to avoid.
+Now let's add obstacles for the player to avoid. These will appear as blocks in the game world.
 
 ![!!images block](/assets/block.png)
 ![!!assets block](/assets/block.png)
@@ -567,7 +624,7 @@ return obstacles
 
 ## !!steps Obstacles 2/6
 
-Spawn some obstacles outside of the screen and move them to the left.
+Now we'll spawn obstacles off-screen and move them to the left, so they appear to come toward the player.
 
 ### !!tabs obstacles.lua
 
@@ -575,8 +632,8 @@ Spawn some obstacles outside of the screen and move them to the left.
 function obstacles.load()
 -- !diff(1:3) +
   obstacles.list = {}
-  obstacles.spawn_interval = 5
-  obstacles.spawn_timer = 0
+  obstacles.spawn_interval = 5   -- seconds between spawns
+  obstacles.spawn_timer = 0      -- countdown timer
 end
 
 function obstacles.update(dt)
@@ -588,7 +645,7 @@ end
 
 ## !!steps Obstacles 3/6
 
-Let's spawn obstacles at regular intervals.
+Now we'll increment the spawn timer so we can create obstacles at regular intervals.
 
 ### !!tabs obstacles.lua
 
@@ -604,7 +661,7 @@ end
 
 ## !!steps Obstacles 4/6
 
-Spawn the obstacles at random y positions.
+Next, we'll spawn obstacles at random vertical positions, giving the player a more dynamic challenge.
 
 ### !!tabs obstacles.lua
 
@@ -631,7 +688,7 @@ end
 
 ## !!steps Obstacles 5/6
 
-Move the obstacles to the left and remove them when they go off screen.
+Let's move the obstacles to the left each frame and remove them once they go off-screen. This keeps the game efficient and prevents a growing list of unused obstacles.
 
 ### !!tabs obstacles.lua
 
@@ -653,7 +710,7 @@ end
 
 ## !!steps Obstacles 6/6
 
-Draw the obstacles.
+Finally, let's draw all the obstacles on the screen so the player can see and avoid them.
 
 ```bash !console
 git checkout a4bc9c670d294c7acf1207c099d50d5fc1d0ad87
@@ -679,7 +736,7 @@ end
 
 ## !!steps Player's Health 1/4
 
-Before we can handle collisions, let's add a health system to the player.
+Before we handle collisions with obstacles, let's give the player a health system. This will let us track how many hits the player can take.
 
 ![!!images live](/assets/live.png)
 ![!!assets live](/assets/live.png)
@@ -703,6 +760,8 @@ end
 ```
 
 ## !!steps Player's Health 2/4
+
+Add a sprite for a life icon and updated the player to track lives.
 
 ### !!tabs player.lua
 
@@ -729,7 +788,7 @@ end
 
 ## !!steps Player's Health 3/4
 
-Draw the player's lives in the top-left corner.
+Draw the player's lives in the top-left corner using the heart sprite.
 
 ### !!tabs player.lua
 
@@ -753,7 +812,7 @@ end
 
 ## !!steps Player's Health 4/4
 
-Let's add a damage function to the player.
+And add a damage function to reduce lives when the player hits an obstacle.
 
 ```bash !console
 git checkout 42ce6b6720ff640f3ff59f6e6ba8d7699bdc9109
@@ -776,7 +835,7 @@ end
 
 ## !!steps Collisions 1/2
 
-When an obstacle collides with the player, we want to reduce the player's health.
+When an obstacle collides with the player, we want to reduce the player's health. First, we make sure the player module is available in obstacles.lua:
 
 ### !!tabs obstacles.lua
 
@@ -789,7 +848,7 @@ end
 
 ## !!steps Collisions 2/2
 
-We can use AABB collision detection to check if two rectangles overlap.
+We use AABB (Axis-Aligned Bounding Box) collision detection to check if the player rectangle overlaps with an obstacle rectangle. If a collision occurs, the player takes damage and the obstacle is removed.
 
 ### !!tabs obstacles.lua
 
@@ -839,7 +898,7 @@ return utils
 
 ## !!steps Polishing 1/9
 
-The player can move infinitely after the user stops pressing a key. Let's decrease the velocity over time to simulate friction.
+The player currently **keeps moving after the keys are released**, which feels unrealistic.
 
 ### !!tabs player.lua
 
@@ -862,11 +921,15 @@ end
 
 ## !!steps Polishing 2/9
 
-The player can move infinitely after the user stops pressing a key. Let's decrease the velocity over time to simulate friction.
+To fix this, we'll **simulate friction** by gradually decreasing the velocity when there's no input.
+
+Learn more about easing functions [here](https://www.svgator.com/blog/easing-functions/).
 
 ```bash !console
 git checkout 8907f5af4523c519c54e9d86a75813519a4a61bb
 ```
+
+![!!images easing](/assets/easing.gif)
 
 ### !!tabs player.lua
 
@@ -874,9 +937,9 @@ git checkout 8907f5af4523c519c54e9d86a75813519a4a61bb
 function player.load()
   -- previous code
 -- !diff(1:3) +
-  player.drag = 0.8 -- drag coefficient
-  player.drag_start_at = 0.2 -- start applying drag after this threshold
-  player.last_input = 0 -- time since last input
+  player.drag = 0.8 -- how strong the friction is
+  player.drag_start_at = 0.2 -- wait 0.2 seconds after last input before applying drag
+  player.last_input = 0 -- time since the player last pressed a key
 end
 
 function player.update(dt)
@@ -915,7 +978,7 @@ end
 
 ## !!steps Polishing 3/9
 
-Let's add a wind force to the player when no input is detected.
+To make movement more interesting, we'll add a wind force that slightly pushes the player when there's no input.
 
 ```bash !console
 git checkout d6345493a832dbc175e89cce612686fc9e85432f
@@ -944,7 +1007,7 @@ end
 
 ## !!steps Polishing 4/9
 
-Let's change the player's sprite to the direction it's moving.
+To make the player feel more responsive, we change the sprite based on movement direction. This visually communicates which way the player is moving.
 
 ```bash !console
 git checkout fa53b4baae6e6419086b07d16727c84fe2b4f16e
@@ -997,7 +1060,7 @@ end
 
 ## !!steps Polishing 5/9
 
-When the player hits the screen bounds, we want it to bounce back.
+Currently, the player stops abruptly when hitting the screen edges. To make movement feel more dynamic, we'll make the player bounce back slightly when hitting the bounds.
 
 ```bash !console
 git checkout 35c0b2f4209693a7904b109860feef131cb9bd54
@@ -1040,7 +1103,7 @@ end
 
 ## !!steps Polishing 6/9
 
-Let's improve the background by adding a parallax effect. Start by moving the code to a new file.
+To make the background feel more dynamic and immersive, we implement a parallax effect, where different layers move at different speeds to create depth. Let's improve the code by moving background logic into its own file.
 
 ### !!tabs background.lua
 
@@ -1102,7 +1165,7 @@ end
 
 ## !!steps Polishing 7/9
 
-Now let's create multiple layers from our initial the background. And reuse our scrolling pattern to make infinite backgrounds.
+To enhance the visual depth, we create multiple background layers (clouds front and back) and reuse the infinite scrolling pattern from before. This produces a true parallax effect.
 
 ```bash !console
 git checkout d8473233c71229347eb0a137bdbbb445d177a125
@@ -1188,7 +1251,7 @@ end
 
 ## !!steps Polishing 8/9
 
-Let's add particles to the background.
+To make the background more lively and visually appealing, we introduce particle effects, which could simulate things like stars.
 
 ### !!tabs main.lua
 
@@ -1457,7 +1520,7 @@ end
 
 ## !!steps Sound 1/1
 
-Let's add a sound effect to the player's death.
+Adds background music and sound effects for actions like moving, stopping, collisions, and damage, enhancing game feedback and immersion.
 
 ```bash !console
 git checkout 8d4345bdb664409bd5ce83394cb9f0f5834482e1

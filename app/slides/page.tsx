@@ -38,6 +38,7 @@ export default function Page() {
             <Selection from={steps.map((step) => step.children)} />
           </div>
           <SlideContent
+            charts={steps.map((step) => step.charts || [])}
             images={steps.map((step) => step.images || [])}
             audios={steps.map((step) => step.audios || [])}
             assets={steps.map((step) => step.assets || [])}

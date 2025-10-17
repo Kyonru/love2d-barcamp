@@ -1,11 +1,23 @@
 "use client"
 import { useSelectedIndex } from "codehike/utils/selection"
+import { Mermaid } from "mdx-mermaid/Mermaid"
+import mermaid from "mermaid"
 
 type SlideContentProps = {
   images: { url: string; alt: string; title: string }[][]
   audios: { url: string; alt: string; title: string }[][]
   assets: { url: string; alt: string; title: string }[][]
+  charts: {
+    meta: string
+    value: string
+    lang: string
+  }[][]
 }
+
+mermaid.initialize({
+  securityLevel: "loose",
+  theme: "dark",
+})
 
 export const SlideContent = (props: SlideContentProps) => {
   const [selectedIndex] = useSelectedIndex()
@@ -13,9 +25,16 @@ export const SlideContent = (props: SlideContentProps) => {
   const images = props.images[selectedIndex]
   const audios = props.audios[selectedIndex]
   const assets = props.assets[selectedIndex]
+  const charts = props.charts[selectedIndex]
 
   return (
     <div className="flex flex-col">
+      <div className="flex flex-col gap-y-1">
+        {charts.map((chart, index) => (
+          <Mermaid key={index} chart={chart.value} />
+        ))}
+      </div>
+
       <div className="mb-8 grid flex-1 grid-cols-1 flex-col justify-between gap-4 md:grid-cols-2">
         {images.map((image, index) => (
           <img

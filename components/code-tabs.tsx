@@ -14,6 +14,7 @@ export const TabsSchema = Block.extend({
   images: z.optional(z.array(ImageBlock)),
   audios: z.optional(z.array(ImageBlock)),
   assets: z.optional(z.array(ImageBlock)),
+  charts: z.optional(z.array(CodeBlock)),
 })
 
 export function CodeWithTabs(props: {
