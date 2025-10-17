@@ -26,7 +26,7 @@ export function ConsolePrompt({
   const animatedCommand = useTypewriter(command, speed, delay)
 
   const handleClick = () => {
-    if (command) {
+    if (command && process.env.NEXT_PUBLIC_API_URL) {
       navigator.clipboard.writeText(command)
 
       const isCheckout = command.includes("git checkout ")
