@@ -1,8 +1,10 @@
 import Image from "next/image"
 import { CurrentUrl } from "@/components/current-url"
+import { If } from "@/components/if"
 
 # Creating 2D games with Löve
 
+<If when={process.env.NEXT_PUBLIC_SHOW_CONNECT_MESSAGE}>
 I'm Robert (@kyonru)
 
 <div className="flex flex-row">
@@ -12,6 +14,7 @@ I'm Robert (@kyonru)
   &nbsp;
   <span>Indie dev</span>
 </div>
+</If>
 
 ```lua
 function love.draw()

@@ -1,6 +1,8 @@
 import Image from "next/image"
 import Link from "next/link"
+import { If } from "@/components/if"
 
+<If when={process.env.NEXT_PUBLIC_SHOW_CONNECT_MESSAGE}>
 ## Let's connect!
 
 LinkedIn: [Kyonru](https://www.linkedin.com/in/kyonru/)
@@ -12,7 +14,9 @@ LinkedIn: [Kyonru](https://www.linkedin.com/in/kyonru/)
   height={200}
 />
 
-I work at Abbott Laboratories, they are hiring, if you need a referral feel free to reach out.
+I work at {process.env.NEXT_PUBLIC_CURRENT_COMPANY}, they are hiring, if you need a referral feel free to reach out.
+
+</If>
 
 ## Credits
 
