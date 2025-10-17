@@ -972,6 +972,7 @@ end
 ### !!tabs utils.lua
 
 ```lua !
+-- !diff(1:4) +
 function utils.easeOutCirc(value, factor)
   local eased = math.sqrt(1 - math.pow(factor - 1, 2))
   return value * eased
