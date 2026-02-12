@@ -8,6 +8,7 @@ import Content from "./content.mdx"
 import Link from "next/link"
 import { SlideContent } from "./slide-content"
 import { InitialPage } from "@/components/inital-page"
+import { Suspense } from "react"
 
 const Schema = Block.extend({
   steps: z.array(TabsSchema),
@@ -22,7 +23,9 @@ export default function Page() {
         <div className="mb-8 flex flex-1 flex-col justify-between">
           <div className="mb-2">
             <Controls steps={steps} />
-            <InitialPage stepsCount={steps.length} />
+            <Suspense>
+              <InitialPage stepsCount={steps.length} />
+            </Suspense>
           </div>
           <CodeEditorWindow steps={steps}>
             <Selection
