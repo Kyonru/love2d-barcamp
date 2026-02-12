@@ -1,16 +1,13 @@
 import { z } from "zod"
 import { Block, parseRoot } from "codehike/blocks"
-import {
-  Selection,
-  SelectionProvider,
-  useSelectedIndex,
-} from "codehike/utils/selection"
+import { Selection, SelectionProvider } from "codehike/utils/selection"
 import { Controls } from "@/components/controls"
 import { CodeWithTabs, TabsSchema } from "@/components/code-tabs"
 import { CodeEditorWindow } from "@/components/editor"
 import Content from "./content.mdx"
 import Link from "next/link"
 import { SlideContent } from "./slide-content"
+import { InitialPage } from "@/components/inital-page"
 
 const Schema = Block.extend({
   steps: z.array(TabsSchema),
@@ -25,6 +22,7 @@ export default function Page() {
         <div className="mb-8 flex flex-1 flex-col justify-between">
           <div className="mb-2">
             <Controls steps={steps} />
+            <InitialPage stepsCount={steps.length} />
           </div>
           <CodeEditorWindow steps={steps}>
             <Selection

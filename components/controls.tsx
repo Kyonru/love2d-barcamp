@@ -1,6 +1,6 @@
 "use client"
 import { useSelectedIndex } from "codehike/utils/selection"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react"
 import { TabsSchema } from "@/components/code-tabs"
@@ -44,6 +44,10 @@ const Dot = ({
   )
 }
 
+const updateUrl = (page: number) => {
+  window.history.replaceState({}, "", `/slides?page=${page}`)
+}
+
 export function Controls({ steps }: Props) {
   const [selectedIndex, setSelectedIndex] = useSelectedIndex()
   const length = steps.length
@@ -57,6 +61,10 @@ export function Controls({ steps }: Props) {
     [selectedIndex, length],
   )
   const onSelect = useCallback((i: number) => setSelectedIndex(i), [])
+
+  useEffect(() => {
+    updateUrl(selectedIndex)
+  }, [selectedIndex])
 
   useHotkeys("arrowleft", onBack, [onBack])
   useHotkeys("arrowright", onNext, [onNext])
